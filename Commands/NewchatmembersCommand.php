@@ -49,10 +49,14 @@ class NewchatmembersCommand extends SystemCommand
             return $member->username;
         }, $memberList);
 
+        $usersid = array_map(function ($member) {
+            return $member->id;
+        }, $memberList);
+
         $keyboard_data = [
             'type' => 'identifier',
             'data' => [
-                'members' => $members
+                'ids' => $usersid[0]
             ]
         ];
 

@@ -61,19 +61,16 @@ class CallbackqueryCommand extends SystemCommand
     }
 
     protected function newMemberCallback($chat_id, $from, $callback_data, $member, $callback_query_id) {
-        if (is_array($callback_data['data']['members'])) {
-            $new_members = implode(', ', $callback_data['data']['members']);
-        } else {
-            $callback_data['data']['members'] = [$callback_data['data']['members']];
-            $new_members = $callback_data['data']['members'];
+        if (!is_array($callback_data['data']['ids'])) {
+            $callback_data['data']['ids'] = [$callback_data['data']['ids']];
         }
 
-        $result = in_array($member, $callback_data['data']['members']);
+        $result = in_array($from, $callback_data['data']['ids']);
 
         if (empty($result)) {
-            $text = '@' . $member . ', este botão não é para você, intrometido!' . PHP_EOL . ' @' . $new_members . ' quem deveria clicar';
+            $text = 'Este botão não é para você, intrometido!';
         } else {
-            $text = "Olá @" . $new_members . "!" . PHP_EOL . "Seja bem vindo ao grupo!";
+            $text = "Olá @" . $member . "!" . PHP_EOL . "Seja bem vindo ao grupo!";
             $this->unbanUser($chat_id, $from);
         }
 
