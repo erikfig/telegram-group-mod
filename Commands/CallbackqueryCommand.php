@@ -46,7 +46,7 @@ class CallbackqueryCommand extends SystemCommand
     public function execute()
     {
         $callback_query    = $this->getCallbackQuery();
-        $member = $callback_query->getFrom()->getUsername();
+        $member = $callback_query->getFrom()->tryMention();
         $chat_id = $callback_query->getMessage()->getChat()->getId();
         
         $callback_query_id = $callback_query->getId();
@@ -68,9 +68,9 @@ class CallbackqueryCommand extends SystemCommand
         $result = in_array($from, $callback_data['data']['ids']);
 
         if (empty($result)) {
-            $text = 'Este botão não é para você, intrometido!';
+            $text =  $member . ', este botão não é para você, intrometido!' . PHP_EOL . ' ' . $new_members . ' quem deveria clicar';
         } else {
-            $text = "Olá @" . $member . "!" . PHP_EOL . "Seja bem vindo ao grupo!";
+            $text = "Olá " . $new_members . "!" . PHP_EOL . "Seja bem vindo ao grupo!";
             $this->unbanUser($chat_id, $from);
         }
 
